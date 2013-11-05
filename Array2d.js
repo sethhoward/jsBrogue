@@ -11,11 +11,11 @@ var Array2D = Class({
 		this.storageArray = new Array(width * height);
 	},
 
-	set: function(row, col, value) {
+	set: function(col, row, value) {
 		this.storageArray[this.width * row + col] = value;
 	},
 
-	get: function(row, col) {
+	get: function(col, row) {
 		return this.storageArray[this.width * row + col];
 	},
 });
