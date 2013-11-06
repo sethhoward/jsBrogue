@@ -91,8 +91,10 @@ function draw() {
 	for(var i = 0; i < cols; i++) {
 		for(var j = 0; j < rows; j++) {
 			var rect = rectArray.get(i, j);
-			drawContext.fillStyle = rect.color.rgbaStyle();
-			drawContext.fillRect(rect.x, rect.y, rect.width, rect.height);
+			if (rect.isDirty) {
+				drawContext.fillStyle = rect.color.rgbaStyle();
+				drawContext.fillRect(rect.x, rect.y, rect.width, rect.height);
+			};
 		}
 	};
 
@@ -135,4 +137,5 @@ function plotChar(inputChar, xLoc, yLoc, foreRed, foreGreen, foreBlue, backRed, 
 	color.red = Math.floor(backRed/100 * 255);
 	color.green = Math.floor(backGreen/100 *255);
 	color.blue = Math.floor(backBlue/100*255);
+	rectArray.get(xLoc, yLoc).isDirty = true;
 }
