@@ -43,23 +43,25 @@ function plotCharWithColor(inputChar, xLoc, yLoc, cellForeColor, cellBackColor) 
 		inputChar = ' ';
 	}
 	
-	if (inputChar		!= displayBuffer.get(xLoc, yLoc).character
-		|| foreRed		!= displayBuffer.get(xLoc, yLoc).foreColorComponents[0]
-		|| foreGreen	!= displayBuffer.get(xLoc, yLoc).foreColorComponents[1]
-		|| foreBlue		!= displayBuffer.get(xLoc, yLoc).foreColorComponents[2]
-		|| backRed		!= displayBuffer.get(xLoc, yLoc).backColorComponents[0]
-		|| backGreen	!= displayBuffer.get(xLoc, yLoc).backColorComponents[1]
-		|| backBlue		!= displayBuffer.get(xLoc, yLoc).backColorComponents[2]) {
+	var buffer = displayBuffer.get(xLoc, yLoc);
+
+	if (inputChar		!= buffer.character
+		|| foreRed		!= buffer.foreColorComponents[0]
+		|| foreGreen	!= buffer.foreColorComponents[1]
+		|| foreBlue		!= buffer.foreColorComponents[2]
+		|| backRed		!= buffer.backColorComponents[0]
+		|| backGreen	!= buffer.backColorComponents[1]
+		|| backBlue		!= buffer.backColorComponents[2]) {
 		
-		displayBuffer.get(xLoc, yLoc).needsUpdate = true;
+		buffer.needsUpdate = true;
 		
-		displayBuffer.get(xLoc, yLoc).character = inputChar;
-		displayBuffer.get(xLoc, yLoc).foreColorComponents[0] = foreRed;
-		displayBuffer.get(xLoc, yLoc).foreColorComponents[1] = foreGreen;
-		displayBuffer.get(xLoc, yLoc).foreColorComponents[2] = foreBlue;
-		displayBuffer.get(xLoc, yLoc).backColorComponents[0] = backRed;
-		displayBuffer.get(xLoc, yLoc).backColorComponents[1] = backGreen;
-		displayBuffer.get(xLoc, yLoc).backColorComponents[2] = backBlue;
+		buffer.character = inputChar;
+		buffer.foreColorComponents[0] = foreRed;
+		buffer.foreColorComponents[1] = foreGreen;
+		buffer.foreColorComponents[2] = foreBlue;
+		buffer.backColorComponents[0] = backRed;
+		buffer.backColorComponents[1] = backGreen;
+		buffer.backColorComponents[2] = backBlue;
 	}
 	
 	//restoreRNG;
@@ -71,14 +73,16 @@ function commitDraws() {
 	for (i=0; i<kCOLS; i++) {
 		for (j=0; j<kROWS; j++) {
 			if (displayBuffer.get(i,j).needsUpdate) {
-				plotChar(displayBuffer.get(i,j).character, i, j,
-						 displayBuffer.get(i,j).foreColorComponents[0],
-						 displayBuffer.get(i,j).foreColorComponents[1],
-						 displayBuffer.get(i,j).foreColorComponents[2],
-						 displayBuffer.get(i,j).backColorComponents[0],
-						 displayBuffer.get(i,j).backColorComponents[1],
-						 displayBuffer.get(i,j).backColorComponents[2]);
-				displayBuffer.get(i,j).needsUpdate = false;
+				var buffer = displayBuffer.get(i, j);
+
+				plotChar(buffer.character, i, j,
+						 buffer.foreColorComponents[0],
+						 buffer.foreColorComponents[1],
+						 buffer.foreColorComponents[2],
+						 buffer.backColorComponents[0],
+						 buffer.backColorComponents[1],
+						 buffer.backColorComponents[2]);
+				buffer.needsUpdate = false;
 			}
 		}
 	}

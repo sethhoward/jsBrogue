@@ -17,7 +17,6 @@ var MENU_FLAME_DENOMINATOR = (100 + MENU_FLAME_RISE_SPEED + MENU_FLAME_SPREAD_SP
 
 function titleMenu() {
 	//signed short flames[COLS][(ROWS + MENU_FLAME_ROW_PADDING)][3]; // red, green and blue
-	// TODO: create a flat 3d array thing so this runs faster
 	var flames = new Array(kCOLS);
 
 	for (var i = 0; i < kCOLS; i++) {
@@ -28,124 +27,18 @@ function titleMenu() {
     	}
 	}
 
-//	var flames = new Array2D(kCOLS, kROWS);
-	//var colorSources = new Array2D(MENU_FLAME_COLOR_SOURCE_COUNT, 4);
-
-	// TODO: change back
-	var colorSources = new Array(MENU_FLAME_COLOR_SOURCE_COUNT);
-	for(var i = 0; i < MENU_FLAME_COLOR_SOURCE_COUNT; i++) {
-		colorSources[i] = new Array(4);
-	}
+	var colorSources = new Array2D(MENU_FLAME_COLOR_SOURCE_COUNT, 4);
 
 	var colors = new Array2D(kCOLS, kROWS + MENU_FLAME_ROW_PADDING);
 	var mask = new Array2D(kCOLS, kROWS);
-	//signed short colorSources[MENU_FLAME_COLOR_SOURCE_COUNT][4]; // red, green, blue, and rand, one for each color source (no more than MENU_FLAME_COLOR_SOURCE_COUNT).
-	//color *colors[COLS][(ROWS + MENU_FLAME_ROW_PADDING)];
-	//unsigned char mask[COLS][ROWS];
-	//boolean controlKeyWasDown = false;
-	
-	/*
-	short i, b, x, y, button;
-	buttonState state;
-	brogueButton buttons[6];
-	char whiteColorEscape[10] = "";
-	char goldColorEscape[10] = "";
-	char newGameText[100] = "", customNewGameText[100] = "";
-	rogueEvent theEvent;
-	enum NGCommands buttonCommands[6] = {NG_NEW_GAME, NG_OPEN_GAME, NG_VIEW_RECORDING, NG_HIGH_SCORES, NG_QUIT};
-	
-	cellDisplayBuffer shadowBuf[COLS][ROWS];*/
-	/*var shadowBuf = new Array2D(kCOLS, kROWS);
-	for (var i = 0; i < kCOLS; i++) {
-		for(var j = 0; j < kROWS; j++) {
-			shadowBuf.set(i, j, new cellDisplayBuffer);
-		}
-	};*/
-	
-	// Initialize the RNG so the flames aren't always the same.
-	
+
 	seedRandomGenerator(0);
 	
-	// Empty nextGamePath and nextGameSeed so that the buttons don't try to load an old game path or seed.
-	//rogue.nextGamePath[0] = '\0';
-	//rogue.nextGameSeed = 0;
-	
-	// Initialize the title menu buttons.
-	/*encodeMessageColor(whiteColorEscape, 0, &white);
-    encodeMessageColor(goldColorEscape, 0, KEYBOARD_LABELS ? &itemMessageColor : &white);
-	sprintf(newGameText, "      %sN%sew Game      ", goldColorEscape, whiteColorEscape);
-	sprintf(customNewGameText, " %sN%sew Game (custom) ", goldColorEscape, whiteColorEscape);
-	b = 0;
-	button = -1;
-	
-	initializeButton(&(buttons[b]));
-	strcpy(buttons[b].text, newGameText);
-	buttons[b].hotkey[0] = 'n';
-	buttons[b].hotkey[1] = 'N';
-	b++;
-	
-	initializeButton(&(buttons[b]));
-	sprintf(buttons[b].text, "     %sO%spen Game      ", goldColorEscape, whiteColorEscape);
-	buttons[b].hotkey[0] = 'o';
-	buttons[b].hotkey[1] = 'O';
-	b++;
-	
-	initializeButton(&(buttons[b]));
-	sprintf(buttons[b].text, "   %sV%siew Recording   ", goldColorEscape, whiteColorEscape);
-	buttons[b].hotkey[0] = 'v';
-	buttons[b].hotkey[1] = 'V';
-	b++;
-	
-	initializeButton(&(buttons[b]));
-	sprintf(buttons[b].text, "    %sH%sigh Scores     ", goldColorEscape, whiteColorEscape);
-	buttons[b].hotkey[0] = 'h';
-	buttons[b].hotkey[1] = 'H';
-	b++;*/
-	
-    // Seth:
-/*	initializeButton(&(buttons[b]));
-	sprintf(buttons[b].text, "        %sQ%suit        ", goldColorEscape, whiteColorEscape);
-	buttons[b].hotkey[0] = 'q';
-	buttons[b].hotkey[1] = 'Q';
-	b++;*/
-	
-	/*
-	x = COLS - 1 - 20 - 2;
-	y = ROWS - 1;
-	for (i = b-1; i >= 0; i--) {
-		y -= 2;
-		buttons[i].x = x;
-		buttons[i].y = y;
-		buttons[i].buttonColor = titleButtonColor;
-		buttons[i].flags |= B_WIDE_CLICK_AREA;
-	}*/
-	
-//	blackOutScreen();
-	/*
-	clearDisplayBuffer(shadowBuf);
-	initializeButtonState(&state, buttons, b, x, y, 20, b*2-1);
-	rectangularShading(x, y, 20, b*2-1, &black, INTERFACE_OPACITY, shadowBuf);
-	drawButtonsInState(&state);*/
     
 	initializeMenuFlames(true, colors, colorSources, flames, mask);
-  //  rogue.creaturesWillFlashThisTurn = false; // total unconscionable hack
-	
-	//do {
-		/*if (!controlKeyWasDown && controlKeyIsDown()) {
-			strcpy(state.buttons[0].text, customNewGameText);
-			drawButtonsInState(&state);
-			buttonCommands[0] = NG_NEW_GAME_WITH_SEED;
-			controlKeyWasDown = true;
-		} else if (controlKeyWasDown && !controlKeyIsDown()) {
-			strcpy(state.buttons[0].text, newGameText);
-			drawButtonsInState(&state);
-			buttonCommands[0] = NG_NEW_GAME;
-			controlKeyWasDown = false;
-		}*/
+
 		
-		// Update the display.
-		
-	var profiler = new Profile();
+	//var profiler = new Profile();
 
 	
 		setInterval(function updateMainMenuDisplay() {
@@ -162,26 +55,6 @@ function titleMenu() {
 		//	profiler.print();
 			//overlayDisplayBuffer(state.rbuf, NULL);
 		}, MENU_FLAME_UPDATE_DELAY);
-		
-		
-		// Pause briefly.
-		/*if (pauseBrogue(MENU_FLAME_UPDATE_DELAY)) {
-			// There was input during the pause! Get the input.
-			nextBrogueEvent(&theEvent, true, false, true);
-			
-			// Process the input.
-			button = processButtonInput(&state, NULL, &theEvent);
-		}*/
-		
-		// Revert the display.
-	//	overlayDisplayBuffer(state.rbuf, NULL);
-		
-	//} while (button == -1 && rogue.nextGame == NG_NOTHING);
-
-	/*drawMenuFlames(flames, mask);
-	if (button != -1) {
-		rogue.nextGame = buttonCommands[button];
-	}*/
 };
 
 function initializeMenuFlames(includeTitle, colors, colorSources, flames, mask) {
@@ -190,7 +63,6 @@ function initializeMenuFlames(includeTitle, colors, colorSources, flames, mask) 
 	var k;
 	var colorSourceCount;
 
-	//short i, j, k, colorSourceCount;
 	var title = [
 		"########   ########       ######         #######   ####     ###  #########",
 		" ##   ###   ##   ###    ##     ###     ##      ##   ##       #    ##     #",
@@ -233,8 +105,7 @@ function initializeMenuFlames(includeTitle, colors, colorSources, flames, mask) 
 	// Seed source color random components.
 	for (i=0; i<MENU_FLAME_COLOR_SOURCE_COUNT; i++) {
 		for (k=0; k<4; k++) {
-			 colorSources[i][k] = rand_range(0, 1000);
-			//colorSources.set(i, k, rand_range(0, 1000));
+			 colorSources.set(i, k, rand_range(0, 1000));
 		}
 	}
 	
@@ -354,16 +225,8 @@ function drawMenuFlames(flames, mask) {
 			}
 		}
 	}
-
-//	draw();
 }
 
-/*function plotCharWithColor(dchar, x, y, cellForeColor, cellBackColor) {
-	var color = rectArray.get(x, y).color;
-	color.red = Math.round(cellBackColor.red);
-	color.green = Math.round(cellBackColor.green);
-	color.blue = Math.round(cellBackColor.blue);
-}*/
 
 function updateMenuFlames(colors, colorSources, flames) {
 	
@@ -424,23 +287,15 @@ function updateMenuFlames(colors, colorSources, flames) {
 				
 				// First, cause the color to drift a little.
 				for (k=0; k<4; k++) {
-				//	colorSources.set(colorSourceNumber, k, colorSources.get(colorSourceNumber, k) + rand_range(-MENU_FLAME_COLOR_DRIFT_SPEED, MENU_FLAME_COLOR_DRIFT_SPEED));
-					colorSources[colorSourceNumber][k] += rand_range(-MENU_FLAME_COLOR_DRIFT_SPEED, MENU_FLAME_COLOR_DRIFT_SPEED);
-					colorSources[colorSourceNumber][k] = clamp(colorSources[colorSourceNumber][k], 0, 1000);
-					//colorSources.set(colorSourceNumber, k, clamp(colorSources.get(colorSourceNumber, k), 0, 1000));
+					colorSources.set(colorSourceNumber, k, colorSources.get(colorSourceNumber, k) + rand_range(-MENU_FLAME_COLOR_DRIFT_SPEED, MENU_FLAME_COLOR_DRIFT_SPEED));
+					colorSources.set(colorSourceNumber, k, clamp(colorSources.get(colorSourceNumber, k), 0, 1000));
 				}
 				
 				// Then, add the color to this tile's flames.
-				rand = colors.get(i, j).rand * colorSources[colorSourceNumber][0] / 1000;
-				flames[i][j][0] += (colors.get(i, j).red + (colors.get(i, j).redRand * colorSources[colorSourceNumber][1] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
-				flames[i][j][1] += (colors.get(i, j).green	+ (colors.get(i, j).greenRand	* colorSources[colorSourceNumber][2] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
-				flames[i][j][2] += (colors.get(i, j).blue	+ (colors.get(i, j).blueRand	* colorSources[colorSourceNumber][3] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
-				
-			
-			//	rand = colors[i][j]->rand * colorSources[colorSourceNumber][0] / 1000;
-			//	flames[i][j][0] += (colors[i][j]->red	+ (colors[i][j]->redRand	* colorSources[colorSourceNumber][1] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
-			//	flames[i][j][1] += (colors[i][j]->green	+ (colors[i][j]->greenRand	* colorSources[colorSourceNumber][2] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
-			//	flames[i][j][2] += (colors[i][j]->blue	+ (colors[i][j]->blueRand	* colorSources[colorSourceNumber][3] / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
+				rand = colors.get(i, j).rand * colorSources.get(colorSourceNumber, 0) / 1000;
+				flames[i][j][0] += (colors.get(i, j).red + (colors.get(i, j).redRand * colorSources.get(colorSourceNumber, 1) / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
+				flames[i][j][1] += (colors.get(i, j).green	+ (colors.get(i, j).greenRand	* colorSources.get(colorSourceNumber, 2) / 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
+				flames[i][j][2] += (colors.get(i, j).blue	+ (colors.get(i, j).blueRand	* colorSources.get(colorSourceNumber, 3)/ 1000) + rand) * MENU_FLAME_PRECISION_FACTOR;
 				
 				colorSourceNumber++;
 			}

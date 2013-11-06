@@ -39,21 +39,20 @@ function Color(red, green, blue, redRand, greenRand, blueRand, rand, colorDances
 	else {
 		this.colorDances = colorDances;
 	}
-
-
-	this.rgbaStyle = function () {
-		return "rgba(" + this.red + ", " + this.green + ", " + this.blue + ", 1)";
-	};
-
-	this.rgbHexValue = function () {
-		return rgbToHex(this.red, this.green, this.blue);
-	};
-
-	function rgbToHex(r, g, b) {
-    	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-	};
-
-	this.description = function () {
-		return ("<Color> r: " + this.red + " g: " + this.green + " b: " + this.blue);
-	};
 }
+
+Color.prototype.rgbaStyle = function () {
+	return "rgba(" + this.red + ", " + this.green + ", " + this.blue + ", 1)";
+};
+
+Color.prototype.rgbHexValue = function () {
+	return rgbToHex(this.red, this.green, this.blue);
+};
+
+Color.prototype.rgbToHex = function(r, g, b) {
+	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+};
+
+Color.prototype.description = function () {
+	return ("<Color> r: " + this.red + " g: " + this.green + " b: " + this.blue);
+};
